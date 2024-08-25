@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from web.models import Flan, Contact
 from web.forms import ContactForm
 
