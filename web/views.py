@@ -1,15 +1,12 @@
 from django.shortcuts import render
-from web.models import Flan
+from web.models import Flan, Contact
+from web.forms import ContactForm
 
 # Create your views here.
 def index(request):
-    flanes = Flan.objects.all()
-    flanes_privados = Flan.objects.filter(is_private=True)
     flanes_publicos = Flan.objects.filter(is_private=False)
     context = {
-        'flanes': flanes,
-        'flanes_privados': flanes_privados,
-        'flanes_publicos': flanes_publicos
+        'flanes': flanes_publicos
     }
     return render(request, 'index.html', context)
 
@@ -17,4 +14,26 @@ def about(request):
     return render(request, 'about.html')
 
 def welcome(request):
-    return render(request, 'welcome.html')
+    flanes_privado = Flan.objects.filter(is_private=True)
+    context = {
+        'flanes': flanes_privado
+    }
+    return render(request, 'welcome.html', context)
+
+def contact(request):
+    if request.method == 'GET':
+        form = ContactForm()                    # Se crea una instancia del formulario ContactForm sin datos iniciales.
+        context = {'form': form}                # Se crea un contexto que contiene el formulario vacío.
+        return render(request, 'contact.html', context) # Se renderiza la plantilla 'contact.html' con el contexto.
+    else:
+        form = ContactForm(request.POST)        # Se crea una instancia de ContactForm con los datos enviados en la solicitud POST.
+        if form.is_valid():                     # Se verifica si los datos del formulario son válidos.
+            Contact.objects.create(
+                **form.cleaned_data
+            )                                   # Esta es la forma de pedirle a un modelo que cree un registro usando los datos de un formulario
+            return redirect('success')         # Si el formulario es válido, se redirige al usuario a la URL '/success'.
+        context = {'form': form}                # Se crea un contexto que contiene el formulario con los datos (válidos o no).
+        return render(request, 'contact.html', context) # Se vuelve a renderizar la plantilla con el contexto actualizado.
+
+def success(request):
+    return render(request, 'success.html')
