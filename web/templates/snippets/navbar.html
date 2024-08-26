@@ -33,6 +33,10 @@
                         <button class="btn btn-outline-danger" type="submit">Cerrar Sesión</button>
                     </form>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresa</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
