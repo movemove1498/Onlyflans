@@ -3,7 +3,7 @@ from web.models import Flan, Contact
 from web.forms import ContactForm
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from django.services import crear_usuario
+from web.services import crear_usuario
 
 # Create your views here.
 def index(request):

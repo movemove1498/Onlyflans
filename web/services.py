@@ -27,3 +27,4 @@ def crear_usuario(request, username:str, first_name:str, email:str, password:str
         return False
     # si llega aqui se creo el usuario
     messages.success(request,'USUARIO CREADO CON EXITO!! Porfavor ingrese')
+    return True
